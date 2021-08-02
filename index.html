@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  
+  <title>Frontend Mentor | Todo app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body class="dark">
+
+  <main class="todo">
+    <header>
+      <h1>todo</h1>
+      <div class="img">
+        <img src="images/icon-sun.svg" alt="theme-slector" class="theme">
+      </div>
+    </header>
+    
+    <form action="" class="form">
+      <label for="input-todo" class="status"></label>
+      <input type="text" class="input-todo" id="input-todo" placeholder="Create a new todo...">
+    </form>
+    
+    <ul class="todo-list">
+      <li class="footer">
+        <p class="items-left"><span class="items-left-value"></span> items left</p>
+        <div class="links desktop">
+          <p class="cta all-todo current">All</p>
+          <p class="cta active-todo">Active</p>
+          <p class="cta completed-todo">Completed</p>
+        </div>
+        <p class="cta clear-completed">Clear Completed</p>
+      </li>
+      <li class="links mobile">
+        <p class="cta all-todo current">All</p>
+        <p class="cta active-todo">Active</p>
+        <p class="cta completed-todo">Completed</p>
+      </li>
+    </ul>
+  </main>
+
+  <!-- <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div> -->
+  <script src="script.js"></script>
+</body>
+</html>
