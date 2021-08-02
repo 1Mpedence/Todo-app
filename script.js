@@ -11,7 +11,6 @@ const activeTodos = document.querySelectorAll(".active-todo");
 const completedTodos = document.querySelectorAll(".completed-todo");
 const clearCompleted = document.querySelector(".clear-completed");
 const links = document.querySelectorAll(".links *");
- 
 
 theme.addEventListener("click", ()=>{
     if(body.classList.contains("light")){
@@ -28,14 +27,22 @@ theme.addEventListener("click", ()=>{
 input.value = null;
 
 let lis = [];
-let todos = [];
-let num = 0;
-    itemLeft.innerHTML = todos.length - todos.filter(d => d.completed).length;
+let saved = localStorage.getItem("todosSave");
+let todos = JSON.parse(saved);
+if(!todos){
+    todos = [];
+}
 
+itemLeft.innerHTML = todos.length - todos.filter(d => d.completed).length;
+
+for(let todo of todos){
+    render(todo);
+}
+    
 form.addEventListener('submit', (e) =>{
     e.preventDefault()
     todoObject = {
-        id: num,
+        id: Date.now().toString(),
         name: input.value,
         completed: false,
     };
@@ -43,7 +50,8 @@ form.addEventListener('submit', (e) =>{
         todos.push(todoObject);
         render(todoObject);
         input.value = null;
-        num = num+1;
+        
+        save();
     }
 })
 
@@ -67,16 +75,21 @@ function render(todoObject){
     li.appendChild(status);
     li.appendChild(p);
     li.appendChild(del);
+    li.setAttribute("id", todoObject.id);
 
-    li.setAttribute("id", num);
-
-    lis.push(li);
-    status.addEventListener("click", isComplete);
-    del.addEventListener("click", deleteTodo);
 
     todoList.insertBefore(li, todoList.firstChild);
 
     itemLeft.innerHTML = todos.length - todos.filter(d => d.completed).length;
+
+    if(todoObject.completed === true){
+        status.classList.toggle("status-background");
+        p.classList.toggle("completed");
+    }
+    
+    lis.push(li);
+    status.addEventListener("click", isComplete);
+    del.addEventListener("click", deleteTodo);
 }
 
 
@@ -87,6 +100,7 @@ for(let allTodo of allTodos){
         links[3].classList.add("current");
         links[0].classList.remove("cta");
         links[3].classList.remove("cta");
+        save()
     })
 }
 
@@ -117,6 +131,7 @@ for(let activeTodo of activeTodos){
         links[4].classList.add("current");
         links[1].classList.remove("cta");
         links[4].classList.remove("cta");
+        save()
     })
 }
 
@@ -136,6 +151,7 @@ for(let completedTodo of completedTodos){
         links[5].classList.add("current");
         links[2].classList.remove("cta");
         links[5].classList.remove("cta");
+        save()
     })
 }
 
@@ -152,6 +168,7 @@ clearCompleted.addEventListener("click", ()=>{
             }
         }
     }
+    save()
 })
 
 function isComplete(){
@@ -161,9 +178,10 @@ function isComplete(){
     cross.toggle("completed");
     let thisId = this.parentElement.id;
     let result = todos.find(({id}) => id == thisId);
-    result.completed = !result.completed;
+    todos.find(({id}) => id == thisId).completed = !(todos.find(({id}) => id == thisId).completed);
     
     itemLeft.innerHTML = todos.length -  todos.filter(d => d.completed).length;
+    save()
 }
 function deleteTodo(e){
     this.parentElement.remove();
@@ -174,4 +192,17 @@ function deleteTodo(e){
     todos.splice(index, 1);
     
     itemLeft.innerHTML = todos.length -  todos.filter(d => d.completed).length;
+    save()
+}
+
+function save(){
+    let todosSave = todos;
+    let str = JSON.stringify(todosSave);
+    localStorage.setItem("todosSave", str);
+}
+
+showAllTodos();
+for(let allTodo of allTodos){
+    allTodo.classList.add("current");
+    console.log(allTodo.classList);
 }
